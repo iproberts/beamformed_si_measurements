@@ -17,7 +17,7 @@ If you use this code or our paper in your work, please cite [1] with the followi
 ```
 @ARTICLE{roberts_beamformed_si_measurements_2022,
     author={I. P. Roberts and A. Chopra and T. Novlan and S. Vishwanath and J. G. Andrews},
-    journal={\textit{IEEE Trans.~Wireless~Commun.}},
+    journal={IEEE Trans.~Wireless~Commun.},
     title={Beamformed Self-Interference Measurements at 28 {GHz}: Spatial Insights and Angular Spread}, 
     year=2022,
 }

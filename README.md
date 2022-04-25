@@ -120,13 +120,38 @@ We provide the following to illustrate how to fetch parameters for an off-grid n
 
 ```
 % set neighborhood size (maximum shifting tolerance)
-delta_theta = 1.5; % shifting tolerance in azimuth (degrees)
-delta_phi = 1.5; % shifting tolerance in elevation (degrees)
+delta_theta = 1.5; % shifting tolerance in azimuth (degrees) (off-grid)
+delta_phi = 1.5; % shifting tolerance in elevation (degrees) (off-grid)
 
-% fetch distribution parameters based on this shifting tolerance
+% fetch distribution parameters based on this shifting tolerance (interpolated)
 [m,s] = get_normal_params_min(delta_theta,delta_phi); % mean, variance
 
 % draw 1,000 realizations of minimum INR (in dB) using a normal distribution
 min_INR_dB = normrnd(m,sqrt(s),1000,1); % minimum INR (in dB)
 ```
 
+### Interpolating Between Nominal INR Values
+
+This interpolating can also be done across nominal INR values when fetching Gamma distribution parameters.
+
+```
+% set neighborhood size (maximum shifting tolerance)
+delta_theta_phi = 2; % shifting tolerance in azimuth and elevation (degrees)
+
+% nominal INR (off-grid)
+INR_dB = 5; % in dB
+
+% get Gamma distribution parameters (interpolated)
+[a,b] = get_gamma_params_min(delta_theta_phi,INR_dB);
+
+% realize INR reduction (Delta INR min), see (24) in [1] for details
+Delta_INR_min_dB = gamrnd(a,b); % in dB
+
+% minimum INR after shifting beams by at most 2 degrees in azimuth and elevation
+INR_min_dB = INR_dB - Delta_INR_min_dB; % in dB
+```
+
+
+# Questions and Feedback
+
+Feel free to reach out to the corresponding author of [1] with any questions or feedback.

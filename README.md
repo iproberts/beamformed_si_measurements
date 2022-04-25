@@ -4,15 +4,15 @@ This repository contains code related to the following paper on measurements of 
 
 [1] I. P. Roberts, A. Chopra, T. Novlan, S. Vishwanath, and J. G. Andrews, "Beamformed Beamformed Self-Interference Measurements at 28 GHz: Spatial Insights and Angular Spread," IEEE Trans. Wireless Commun.
 
-Using the code in this repo, which is based on the statistical characterization in [1], users can:
+Using the code in this repo, which is based on measurements and statistical characterizations in [1], users can:
  - draw realizations of mmWave self-interference levels (INR values) in full-duplex mmWave systems
  - conduct statistical analyses of full-duplex mmWave communication systems
- - develop solutions to mitigate self-interference in full-duplex mmWave communication systems
+ - develop methods to mitigate self-interference in full-duplex mmWave communication systems
  - evaluate solutions for full-duplex mmWave communication systems
 
-These measurements of self-interference were taken at 28 GHz in an anechoic chamber using two colocated 256-element phased arrays, mounted on two sides of an equilateral platform. Please see [1] for details.
+This work is based on nearly 6.5 million measurements of self-interference taken at 28 GHz in an anechoic chamber using two colocated 256-element phased arrays mounted on separate sides of an equilateral platform. Please see [1] for details.
 
-If you use this code in your work, please cite [1] with the following BibTeX.
+If you use this code or our paper in your work, please cite [1] with the following BibTeX.
 
 ```
 @ARTICLE{roberts_beamformed_si_measurements_2022,
@@ -66,6 +66,12 @@ delta_phi = 2; % shifting tolerance in elevation (degrees)
 % draw 1,000 realizations of minimum INR (in dB) using a normal distribution
 min_INR_dB = normrnd(m,sqrt(s),1000,1); % minimum INR (in dB)
 ```
+
+The following is taken from the included main script, which illustrates the reduction in INR (distributional shift) when transmit and receive beams are allowed to shift their steering directions by at most a few degrees. Each line is a different shifting tolerance (azimuth tolerance, elevation tolerance) in degrees, with (0,0) being the nominal INR distribution without shifting beams.
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/52005199/165019115-dd67b7a1-94cb-4fcc-a501-07d7d1fd4525.png">
+</p>
 
 ### Method 2
 

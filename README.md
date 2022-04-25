@@ -2,7 +2,7 @@
 
 This repository contains code related to the following paper on measurements of self-interference at 28 GHz using phased arrays.
 
-[1] I. P. Roberts, A. Chopra, T. Novlan, S. Vishwanath, and J. G. Andrews, "Beamformed Beamformed Self-Interference Measurements at 28 GHz: Spatial Insights and Angular Spread," IEEE Trans. Wireless Commun.
+[1] I. P. Roberts, A. Chopra, T. Novlan, S. Vishwanath, and J. G. Andrews, "Beamformed Beamformed Self-Interference Measurements at 28 GHz: Spatial Insights and Angular Spread," _IEEE Trans. Wireless Commun._
 
 Using the code in this repo, which is based on measurements and statistical characterizations in [1], users can:
  - draw realizations of mmWave self-interference levels (INR values) in full-duplex mmWave systems

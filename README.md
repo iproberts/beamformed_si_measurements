@@ -22,3 +22,49 @@ This repo contains the following MATLAB code:
 # Example Usage
 
 The measurements and statistical characterization in [1] are particularly useful for drawing realizations of self-interference levels that a full-duplex mmWave platform may incur when transmitting while receiving in-band. We use interference-to-noise ratio (INR) to describe the level of self-interference experienced by such a system. When INR < 0 dB, the system is noise-limited, and when INR > 0 dB, it is self-interference-limited.
+
+To draw a realization of mmWave self-interference (i.e., of INR) for a random transmit beam and random receive beam, one can execute the following in MATLAB using our code.
+
+```
+[m,s] = get_normal_params_min(0,0) % mean and variance
+INR_dB = normrnd(m,sqrt(s)) % INR in dB
+```
+
+The first line fetches a mean `m` and variance `s`, which have been fitted from the measured INR distribution (see Fig. 5 in [1]).
+
+The second line draws a realization of INR (in dB) from a normal distribution with mean `m` and standard deviation `sqrt(s)`.
+
+## Slightly Shifting Beams to Significantly Reduce Self-Interference
+
+One key result from [1] is that INR can be greatly reduced by slightly shifting the steering direction of transmit and receive beams. We have modeled this statistically in [1] in two ways. The first is by modeling the minimum INR distribution (after shifting at most by some amount) as a log-normal distribution. This can be realized in MATLAB using our code as follows.
+
+```
+% set neighborhood size (maximum shifting tolerance)
+delta_theta = 2; % shifting tolerance in azimuth (degrees)
+delta_phi = 2; % shifting tolerance in elevation (degrees)
+
+% fetch distribution parameters based on this shifting tolerance
+[m,s] = get_normal_params_min(delta_theta,delta_phi); % mean, variance
+
+% draw 1,000 realizations of minimum INR (in dB) using a normal distribution
+min_INR_dB = normrnd(m,sqrt(s),1000,1); % minimum INR (in dB)
+```
+
+The second method to realizing minimum INR is based on the Gamma distribution. We found that the reduction in INR seen by a particular beam pair depends on the neighborhood size (shifting tolerance) as well as the INR inherently seen by that beam pair (i.e., the nominal INR of that beam pair). With this method, the shifting tolerance in azimuth and elevation must be equal when using our provided `get` functions.
+
+```
+% set neighborhood size (maximum shifting tolerance)
+delta_theta_phi = 2; % shifting tolerance in azimuth and elevation (degrees)
+
+% nominal INR
+INR_dB = 0; % in dB
+
+% get Gamma distribution parameters
+[a,b] = get_gamma_params_min(delta_theta_phi,INR_dB);
+
+% realize INR reduction (Delta INR min), see (24) in [1] for details
+Delta_INR_min_dB = gamrnd(a,b); % in dB
+
+% minimum INR after shifting beams by at most 2 degrees in azimuth and elevation
+INR_min_dB = INR_dB - Delta_INR_min_dB; % in dB
+```

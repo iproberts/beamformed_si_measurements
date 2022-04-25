@@ -36,7 +36,11 @@ The second line draws a realization of INR (in dB) from a normal distribution wi
 
 ## Slightly Shifting Beams to Significantly Reduce Self-Interference
 
-One key result from [1] is that INR can be greatly reduced by slightly shifting the steering direction of transmit and receive beams. We have modeled this statistically in [1] in two ways. The first is by modeling the minimum INR distribution (after shifting at most by some amount) as a log-normal distribution. This can be realized in MATLAB using our code as follows.
+One key result from [1] is that INR can be greatly reduced by slightly shifting the steering direction of transmit and receive beams. We have modeled this statistically in [1] in two ways. 
+
+### Method 1
+
+The first is by modeling the minimum INR distribution (after shifting at most by some amount) as a log-normal distribution. This can be realized in MATLAB using our code as follows.
 
 ```
 % set neighborhood size (maximum shifting tolerance)
@@ -49,6 +53,8 @@ delta_phi = 2; % shifting tolerance in elevation (degrees)
 % draw 1,000 realizations of minimum INR (in dB) using a normal distribution
 min_INR_dB = normrnd(m,sqrt(s),1000,1); % minimum INR (in dB)
 ```
+
+### Method 2
 
 The second method to realizing minimum INR is based on the Gamma distribution. We found that the reduction in INR seen by a particular beam pair depends on the neighborhood size (shifting tolerance) as well as the INR inherently seen by that beam pair (i.e., the nominal INR of that beam pair). With this method, the shifting tolerance in azimuth and elevation must be equal when using our provided `get` functions.
 
@@ -68,3 +74,59 @@ Delta_INR_min_dB = gamrnd(a,b); % in dB
 % minimum INR after shifting beams by at most 2 degrees in azimuth and elevation
 INR_min_dB = INR_dB - Delta_INR_min_dB; % in dB
 ```
+
+Realizing maximum INR when shifting beams can be executed analogously.
+
+### Method 2B: Two-Stage Approach
+
+In the previous code block, we manually set the nominal INR using
+
+```
+INR_dB = 0;
+```
+
+For what is perhaps more authentic, users can realize the nominal INR based on the global (unshifted) distribution as before using the following.
+
+```
+[m,s] = get_normal_params_min(0,0) % mean and variance of unshifted INR distribution
+INR_dB = normrnd(m,sqrt(s)) % INR in dB
+```
+
+Then, users can realize the reduction enjoyed by a beam pair with this realized nominal INR `INR_dB` using
+
+```
+% set neighborhood size (maximum shifting tolerance)
+delta_theta_phi = 2; % shifting tolerance in azimuth and elevation (degrees)
+
+% get Gamma distribution parameters
+[a,b] = get_gamma_params_min(delta_theta_phi,INR_dB);
+
+% realize INR reduction (Delta INR min), see (24) in [1] for details
+Delta_INR_min_dB = gamrnd(a,b); % in dB
+
+% minimum INR after shifting beams by at most 2 degrees in azimuth and elevation
+INR_min_dB = INR_dB - Delta_INR_min_dB; % in dB
+```
+
+## Interpolating Between Tabulated Fitted Parameters
+
+In [1], we provided tables containing fitted parameters for particular neighborhood sizes and nominal INR levels.
+
+Users wishing to draw realizations for neighborhood sizes (and/or nominal INR levels) not tabulated explicitly, can use our code to fetch interpolated statistical parameters.
+
+### Interpolating Between Neighborhood Sizes
+
+We provide the following to illustrate how to fetch parameters for an off-grid neighborhood size of (1.5,1.5) degrees, which falls between our set of tabulated neighborhoods.
+
+```
+% set neighborhood size (maximum shifting tolerance)
+delta_theta = 1.5; % shifting tolerance in azimuth (degrees)
+delta_phi = 1.5; % shifting tolerance in elevation (degrees)
+
+% fetch distribution parameters based on this shifting tolerance
+[m,s] = get_normal_params_min(delta_theta,delta_phi); % mean, variance
+
+% draw 1,000 realizations of minimum INR (in dB) using a normal distribution
+min_INR_dB = normrnd(m,sqrt(s),1000,1); % minimum INR (in dB)
+```
+

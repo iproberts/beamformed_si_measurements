@@ -12,6 +12,18 @@ Using the code in this repo, which is based on the statistical characterization 
 
 These measurements of self-interference were taken at 28 GHz in an anechoic chamber using two colocated 256-element phased arrays, mounted on two sides of an equilateral platform. Please see [1] for details.
 
+If you use this code in your work, please cite [1] with the following BibTeX.
+
+```
+@ARTICLE{roberts_beamformed_si_measurements_2022,
+    author={I. P. Roberts and A. Chopra and T. Novlan and S. Vishwanath and J. G. Andrews},
+    journal={\textit{IEEE Trans.~Wireless~Commun.}},
+    title={Beamformed Self-Interference Measurements at 28 {GHz}: Spatial Insights and Angular Spread}, 
+    month=apr,
+    year=2022,
+}
+```
+
 # Contents
 
 This repo contains the following MATLAB code:
@@ -150,7 +162,6 @@ Delta_INR_min_dB = gamrnd(a,b); % in dB
 % minimum INR after shifting beams by at most 2 degrees in azimuth and elevation
 INR_min_dB = INR_dB - Delta_INR_min_dB; % in dB
 ```
-
 
 # Questions and Feedback
 

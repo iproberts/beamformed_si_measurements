@@ -175,8 +175,8 @@ INR_min_dB = INR_dB - Delta_INR_min_dB; % in dB
 The `mat/` folder contains five `.mat` files corresponding to the five tables in our paper, each of which contains a lookup table (matrix) of fitted parameters. 
 
 For instance, `params_normal_min.mat` corresponds to Table II in our paper and contains the following variables:
-- `lut_mu_min` - a matrix where the `(i,j)`-th entry is the fitted mean of the `i`-th azimuthal neighborhood and `j`-th elevational neighborhood
-- `lut_var_min` - a matrix where the `(i,j)`-th entry is the fitted variance of the `i`-th azimuthal neighborhood and `j`-th elevational neighborhood
+- `lut_mu_min` - a matrix where the `(i,j)`-th entry is the fitted mean of the `j`-th azimuthal neighborhood and `i`-th elevational neighborhood
+- `lut_var_min` - a matrix where the `(i,j)`-th entry is the fitted variance of the `j`-th azimuthal neighborhood and `i`-th elevational neighborhood
 - `delta_az_list` - the azimuthal neighborhood size of each row in `lut_mu_min` and `lut_var_min`
 - `delta_el_list` - the elevational neighborhood size of each row in `lut_mu_min` and `lut_var_min`
 
